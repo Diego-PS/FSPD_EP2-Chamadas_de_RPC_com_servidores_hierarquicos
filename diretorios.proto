@@ -1,0 +1,56 @@
+/* Arquivo de definição da interface entre cliente e servidor
+ * Estamos usando a versão 3 de protocol buffers 
+ */
+syntax = "proto3";
+
+// Nome do pacote 
+package diretorios;
+
+service DoStuff {
+  rpc insercao (RequisicaoInsercao) returns (RespostaInsercao) {}
+  rpc consulta (RequisicaoConsulta) returns (RespostaConsulta) {}
+  rpc registro (RequisicaoRegistro) returns (RespostaRegistro) {}
+  rpc termino (RequisicaoTermino) returns (RespostaTermino) {}
+}
+
+// inserção: recebe como parâmetros um inteiro positivo (chave), um string (desc) e um número de ponto flutuante (valor)
+message RequisicaoInsercao {
+  int32 chave = 1;
+  string desc = 2;
+  float valor = 3;
+}
+
+// A inserção deve retornar um inteiro (0 ou 1) indicando se o conteúdo foi sobrescrito
+message RespostaInsercao {
+  int32 resposta = 1;
+}
+
+// consulta: recebe como parâmetros um inteiro positivo (chave)
+message RequisicaoConsulta {
+  int32 chave = 1;
+}
+
+// consulta: retorna o conteúdo do string e valor associados à chave, caso ela exista, ou um string nulo e o valor zero caso contrário;
+message RespostaConsulta {
+  string desc = 1;
+  float valor = 2;
+}
+
+// registro: recebe como parâmetro um string com o nome de uma máquina e um inteiro identificando um porto naquela máquina.
+message RequisicaoRegistro {
+  string nome = 1;
+  int32 porto = 2;
+}
+
+// registro: ao final, deve retornar para o cliente o valor retornado pelo outro servidor;
+message RespostaRegistro {
+  int32 num = 1;
+}
+
+// término: um procedimento sem parâmetros que indica que o servidor deve terminar sua execução;
+message RequisicaoTermino {}
+
+// término: nesse caso o servidor deve responder com um inteiro igual ao número de chaves armazenadas até então
+message RespostaTermino {
+  int32 num = 1;
+}

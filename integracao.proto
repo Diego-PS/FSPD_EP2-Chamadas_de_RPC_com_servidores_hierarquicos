@@ -1,0 +1,44 @@
+/* Arquivo de definição da interface entre cliente e servidor
+* Estamos usando a versão 3 de protocol buffers 
+*/
+syntax = "proto3";
+
+// Nome do pacote 
+package integracao;
+
+service DoStuff {
+    rpc registro (RequisicaoRegistro) returns (RespostaRegistro) {}
+    rpc consulta (RequisicaoConsulta) returns (RespostaConsulta) {}
+    rpc termino (RequisicaoTermino) returns (RespostaTermino) {}
+}
+
+// registro: recebe como parâmetros o nome da máquina onde um servidor de diretórios independente está executando e um inteiro indicando o número do porto usado por ele, seguidos por uma lista com todas as chaves contidas naquele servidor (inteiros).
+message RequisicaoRegistro {
+    string nome = 1;
+    int32 porto = 2;
+    repeated int32 chaves = 3;
+}
+
+// registro: Deve retornar o número de chaves recebidas ou zero, se seu código detectar algum erro (normalmente não seria necessário);
+message RespostaRegistro {
+    int32 num = 1;
+}
+
+// consulta: recebe como parâmetro o inteiro positivo ch e consulta um diretório local para ver se conhece a chave indicada.
+message RequisicaoConsulta {
+    int32 chave = 1;
+}
+
+// consulta: Em caso afirmativo, retorna um string indicando o nome (ou endereço IP) do participante que contém aquela chave e um inteiro indicando o número do porto a ser usado para contactá-lo. Em caso negativo, retorna o string "ND" e um inteiro qualquer (p.ex., zero);
+message RespostaConsulta {
+    string nome = 1;
+    int32 porto = 2;
+}
+
+// término: um procedimento sem parâmetros que indica que o servidor deve terminar sua execução;
+message RequisicaoTermino {}
+
+// término: nesse caso o servidor deve responder com um inteiro igual ao número de chaves armazenadas até então
+message RespostaTermino {
+  int32 num = 1;
+}
