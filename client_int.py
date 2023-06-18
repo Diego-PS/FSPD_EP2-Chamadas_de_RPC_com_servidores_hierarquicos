@@ -19,7 +19,11 @@ def run():
         entrada = input().split(',')
         comando = entrada[0]
         
-        # C,ch - consulta o servidor de integração pela chave ch, que deve responder com o identificador de um servidor de diretório independente. Se a resposta for "ND", esse string deve ser escrito na saída. Caso contrário, o cliente em seguida executa uma consulta àquele servidor indentificado na resposta e escreve na saída o valor de retorno.
+        # C,ch - consulta o servidor de integração pela chave ch, 
+        # que deve responder com o identificador de um servidor de diretório independente. 
+        # Se a resposta for "ND", esse string deve ser escrito na saída. 
+        # Caso contrário, o cliente em seguida executa uma consulta àquele 
+        # servidor indentificado na resposta e escreve na saída o valor de retorno.
         if comando == 'C':
             chave = int(entrada[1])
             resposta = stub.consulta(integracao_pb2.RequisicaoConsulta(chave=chave))
@@ -36,7 +40,8 @@ def run():
                 resposta_dir = stub_dir.consulta(diretorios_pb2.RequisicaoConsulta(chave=chave))
                 print(f'{resposta_dir.desc},{resposta_dir.valor:7.4f}')
 
-        # T - sinaliza a terminação do servidor, escreve o valor de retorno e termina o cliente.
+        # T - sinaliza a terminação do servidor, 
+        # escreve o valor de retorno e termina o cliente.
         if comando == 'T':
             resposta = stub.termino(diretorios_pb2.RequisicaoTermino())
             print(resposta.num)

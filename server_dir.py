@@ -13,24 +13,31 @@ import socket
 nome : str = socket.getfqdn()
 porto : int = int(sys.argv[1])
 
-# Interface para o conteúdo a ser armazenado, contendo uma descrição (desc) e um valor (valor)
+# Interface para o conteúdo a ser armazenado, 
+# contendo uma descrição (desc) e um valor (valor)
 class Conteudo:
    def __init__(self, desc: str, valor: float):
       self.desc = desc
       self.valor = valor
 
-# Armazena os objetos inseridos, trata-se de um dicionário que mapeira uma chave a um 
+# Armazena os objetos inseridos, 
+# trata-se de um dicionário que mapeira uma chave a um 
 diretorios : dict[int, Conteudo] = {}
 
 # Os procedimentos oferecidos aos clientes precisam ser encapsulados
 #   em uma classe que herda do código do stub.
 class DoStuff(diretorios_pb2_grpc.DoStuffServicer):
    
-   # Adiciona o método stop_envent no construtor, para terminar a execução do servidor
+   # Adiciona o método stop_envent no construtor, 
+   # para terminar a execução do servidor
    def __init__(self, stop_event):
       self._stop_event = stop_event
    
-   # inserção: recebe como parâmetros um inteiro positivo (chave), um string (desc) e um número de ponto flutuante (valor) e armazena desc e valor em um dicionário, associados à chave, caso ela ainda não exista, retorna zero; caso a chave já existia o conteúdo (desc e valor) devem ser atualizados e o valor 1 deve ser retornado;
+   # inserção: recebe como parâmetros um inteiro positivo (chave), 
+   # um string (desc) e um número de ponto flutuante (valor) 
+   # e armazena desc e valor em um dicionário, associados à chave, 
+   # caso ela ainda não exista, retorna zero; caso a chave já existia 
+   # o conteúdo (desc e valor) devem ser atualizados e o valor 1 deve ser retornado;
    def insercao(self, request, context):
       chave = request.chave
       desc = request.desc
@@ -42,7 +49,9 @@ class DoStuff(diretorios_pb2_grpc.DoStuffServicer):
          diretorios[chave] = Conteudo(desc, valor)
          return diretorios_pb2.RespostaInsercao(resposta=0)
       
-   # consulta: recebe como parâmetros um inteiro positivo (chave) e retorna o conteúdo do string e valor associados à chave, caso ela exista, ou um string nulo e o valor zero caso contrário;
+   # consulta: recebe como parâmetros um inteiro positivo (chave) 
+   # e retorna o conteúdo do string e valor associados à chave, caso ela exista,
+   # ou um string nulo e o valor zero caso contrário;
    def consulta(self, request, context):
       chave = request.chave
       if chave in diretorios:
@@ -51,7 +60,13 @@ class DoStuff(diretorios_pb2_grpc.DoStuffServicer):
       else:
          return diretorios_pb2.RespostaConsulta(desc='', valor=0)
       
-   # registro: recebe como parâmetro um string com o nome de uma máquina e um inteiro identificando um porto naquela máquina. Esse comando só faz sentido para utilizar o serviço que será definido na segunda parte. Ao ser executado, o servidor deve se conectar como cliente de um servido de integração localizado na máquina/porto passados como parâmetros e disparar o procedimento de registro daquele servidor (descrito na segunda parte); ao final, deve retornar para o cliente o valor retornado pelo outro servidor;
+   # registro: recebe como parâmetro um string com o nome de uma máquina 
+   # e um inteiro identificando um porto naquela máquina. 
+   # Esse comando só faz sentido para utilizar o serviço que será definido na segunda parte. 
+   # Ao ser executado, o servidor deve se conectar como cliente de 
+   # um servido de integração localizado na máquina/porto passados como parâmetros 
+   # e disparar o procedimento de registro daquele servidor (descrito na segunda parte); 
+   # ao final, deve retornar para o cliente o valor retornado pelo outro servidor;
    def registro(self, request, context):
       nome_int: str = request.nome
       porto_int: int = request.porto
@@ -63,7 +78,10 @@ class DoStuff(diretorios_pb2_grpc.DoStuffServicer):
       resposta = stub.registro(integracao_pb2.RequisicaoRegistro(nome=nome, porto=porto, chaves=[chave for chave in diretorios]))
       return diretorios_pb2.RespostaTermino(num=resposta.num)
       
-   # término: um procedimento sem parâmetros que indica que o servidor deve terminar sua execução; nesse caso o servidor deve responder com um inteiro igual ao número de chaves armazenadas até então e terminar sua execução depois da resposta.
+   # término: um procedimento sem parâmetros que indica que o 
+   # servidor deve terminar sua execução; nesse caso o servidor deve 
+   # responder com um inteiro igual ao número de chaves armazenadas até 
+   # então e terminar sua execução depois da resposta.
    def termino(self, request, context):
       self._stop_event.set()
       return diretorios_pb2.RespostaTermino(num=len(diretorios))

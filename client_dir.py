@@ -19,7 +19,9 @@ def run():
         entrada = input().split(',')
         comando = entrada[0]
         
-        # I,ch,um string de descrição,val - insere no servidor a chave ch, associada ao string e ao valor val, escreve na saída padrão o valor de retorno do procedimento (0 ou 1);
+        # I,ch,um string de descrição,val - insere no servidor a chave ch, 
+        # associada ao string e ao valor val, 
+        # escreve na saída padrão o valor de retorno do procedimento (0 ou 1);
         if comando == 'I':
             chave = int(entrada[1])
             desc = entrada[2]
@@ -27,7 +29,9 @@ def run():
             resposta = stub.insercao(diretorios_pb2.RequisicaoInsercao(chave=chave, desc=desc, valor=valor))
             print(resposta.resposta)
         
-        # C,ch - consulta o servidor pelo conteúdo associado à chave ch e escreve na saída o string e o valor, separados por uma vírgula, ou apenas -1, caso a chave não seja encontrada;
+        # C,ch - consulta o servidor pelo conteúdo associado à chave ch 
+        # e escreve na saída o string e o valor, separados por uma vírgula, 
+        # ou apenas -1, caso a chave não seja encontrada;
         if comando == 'C':
             chave = int(entrada[1])
             resposta = stub.consulta(diretorios_pb2.RequisicaoConsulta(chave=chave))
@@ -36,14 +40,21 @@ def run():
             else:
                 print(f'{resposta.desc},{resposta.valor:7.4f}')
         
-        # R,nome,porto - dispara o procedimento de registro no servidor de diretórios independente, identificando o nome e o porto onde o servidor de integração se encontra. O cliente deve escrever o valor de retorno recebido. Esse comando pode ser executado qualquer número de vezes, com identificadores de servidores possivelmente diferentes. Esse comando só faz sentido para usar a segunda parte.
+        # R,nome,porto - dispara o procedimento de registro no servidor 
+        # de diretórios independente, identificando o nome e o porto onde o 
+        # servidor de integração se encontra. O cliente deve escrever 
+        # o valor de retorno recebido. 
+        # Esse comando pode ser executado qualquer número de vezes,
+        # com identificadores de servidores possivelmente diferentes. 
+        # Esse comando só faz sentido para usar a segunda parte.
         if comando == 'R':
             nome_int = entrada[1]
             porto_int = int(entrada[2])
             resposta = stub.registro(diretorios_pb2.RequisicaoRegistro(nome=nome_int, porto=porto_int))
             print(resposta.num)
 
-        # T - sinaliza a terminação do servidor, escreve o valor de retorno e termina o cliente.
+        # T - sinaliza a terminação do servidor, 
+        # escreve o valor de retorno e termina o cliente.
         if comando == 'T':
             resposta = stub.termino(diretorios_pb2.RequisicaoTermino())
             print(resposta.num)
