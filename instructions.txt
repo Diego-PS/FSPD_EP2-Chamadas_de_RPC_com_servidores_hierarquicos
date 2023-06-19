@@ -1,0 +1,9 @@
+RUN DOCKER:
+docker run -it --rm -v `pwd`:/work ep2-fspd
+
+HOW TO CHECK IP ADDRESS OF DOCKER CONTAINER:
+docker ps
+docker inspect <id>
+
+HOW TO RUN DOCKER CONTAINER IN ANOTHER TERMINAL:
+docker exec -it <container> bash

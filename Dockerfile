@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
-RUN apt-get install -y vim build-essential git cmake net-tools gdb gcc
+RUN apt-get update && apt-get -y install python3-pip
+RUN pip3 install grpcio
+RUN pip3 install grpcio-tools
 
 WORKDIR /work
