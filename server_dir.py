@@ -97,7 +97,7 @@ def serve():
    # O método add_insecure_port permite a conexão direta por TCP
    #   Outros recursos estão disponíveis, como uso de um registry
    #   (dicionário de serviços), criptografia e autenticação.
-   server.add_insecure_port(f'{nome}:{porto}')
+   server.add_insecure_port(f'0.0.0.0:{porto}')
    # O servidor é iniciado e esse código não tem nada para fazer
    #   a não ser esperar pelo término da execução.
    server.start()

@@ -22,7 +22,7 @@ class Servidor:
 
 # Armazena os objetos inseridos, 
 # trata-se de um dicionário que mapeira uma chave a um 
-servidores : dict[int, Servidor] = {}
+servidores = {}
 
 # Os procedimentos oferecidos aos clientes precisam ser encapsulados
 #   em uma classe que herda do código do stub.
@@ -84,7 +84,7 @@ def serve():
    # O método add_insecure_port permite a conexão direta por TCP
    #   Outros recursos estão disponíveis, como uso de um registry
    #   (dicionário de serviços), criptografia e autenticação.
-   server.add_insecure_port(f'{socket.getfqdn()}:{porto}')
+   server.add_insecure_port(f'0.0.0.0:{porto}')
    # O servidor é iniciado e esse código não tem nada para fazer
    #   a não ser esperar pelo término da execução.
    server.start()
