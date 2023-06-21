@@ -22,7 +22,7 @@ class Conteudo:
 
 # Armazena os objetos inseridos, 
 # trata-se de um dicionário que mapeira uma chave a um 
-diretorios : dict[int, Conteudo] = {}
+diretorios = {}
 
 # Os procedimentos oferecidos aos clientes precisam ser encapsulados
 #   em uma classe que herda do código do stub.
